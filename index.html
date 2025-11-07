@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name – Portfolio</title>
+  <meta name="description" content="Modern, responsive portfolio to showcase projects and contact info." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d10;           /* page background */
+      --bg-soft:#111418;      /* cards, sections */
+      --text:#e6e8ec;         /* primary text */
+      --muted:#9aa4b2;        /* secondary text */
+      --brand:#7c5cff;        /* accent */
+      --brand-2:#22c55e;      /* secondary accent */
+      --ring:rgba(124,92,255,.4);
+      --card:#0e1116;
+      --border:#1a1f29;
+      --shadow: 0 10px 25px rgba(0,0,0,.35), 0 2px 10px rgba(0,0,0,.25);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb; --bg-soft:#ffffff; --card:#ffffff; --text:#0c1020; --muted:#596275; --border:#e6e8ee; --shadow: 0 8px 24px rgba(20,23,40,.08), 0 1px 4px rgba(20,23,40,.06);
+      }
+    }
+
+    /* Reset-ish */
+    *,*::before,*::after{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.18), transparent 40%),
+                  radial-gradient(900px 500px at -20% 0%, rgba(34,197,94,.12), transparent 45%),
+                  var(--bg);
+      color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    a{ color:inherit; text-decoration:none }
+    img{ max-width:100%; height:auto; display:block }
+    .container{ width:min(1100px, 94%); margin-inline:auto }
+    .glass{ background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); backdrop-filter: blur(6px); border:1px solid var(--border); box-shadow:var(--shadow); }
+
+    /* Header */
+    header{ position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(10px); border-bottom:1px solid var(--border); background:rgba(11,13,16,.6) }
+    @media (prefers-color-scheme: light){ header{ background:rgba(247,248,251,.7) } }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:12px 0 }
+    .brand{ display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.3px }
+    .brand .dot{ width:10px; height:10px; border-radius:50%; background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 0 0 6px rgba(124,92,255,.15), 0 0 20px rgba(34,197,94,.25) }
+    .nav a.btn{ padding:10px 14px; border-radius:10px; border:1px solid var(--border); transition:transform .2s ease, box-shadow .2s ease }
+    .nav a.btn:hover{ transform:translateY(-1px); box-shadow: 0 10px 20px rgba(124,92,255,.15) }
+
+    /* Hero */
+    .hero{ display:grid; grid-template-columns:1.2fr .8fr; gap:24px; padding:54px 0 30px }
+    .hero .card{ border-radius:18px; padding:28px; background:var(--bg-soft); border:1px solid var(--border); box-shadow:var(--shadow) }
+    .title{ font-size:clamp(28px, 4vw, 44px); line-height:1.15; font-weight:800; letter-spacing:-.02em }
+    .subtitle{ color:var(--muted); margin-top:6px }
+    .tagrow{ display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 2px }
+    .chip{ font-size:.85rem; padding:8px 12px; border:1px solid var(--border); border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.02)) }
+    .cta{ display:flex; gap:12px; margin-top:16px }
+    .button{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px solid var(--border); font-weight:600; cursor:pointer; transition: transform .2s ease, box-shadow .2s ease }
+    .button.primary{ background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; border:0; box-shadow:0 10px 22px var(--ring) }
+    .button:hover{ transform: translateY(-1px) }
+    .button:active{ transform: translateY(0) }
+
+    .me{ border-radius:18px; overflow:hidden; position:relative; min-height:260px }
+    .me::before{ content:""; position:absolute; inset:0; background:
+      radial-gradient(60% 60% at 80% 20%, rgba(124,92,255,.55), transparent 60%),
+      radial-gradient(50% 50% at 10% 80%, rgba(34,197,94,.45), transparent 60%) }
+    .me img{ opacity:.92 }
+
+    /* Controls */
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin:10px 0 6px }
+    .search{ flex:1 1 260px; display:flex; align-items:center; gap:10px; background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:10px 12px }
+    .search input{ flex:1; background:transparent; border:0; outline:0; color:var(--text) }
+    .filters{ display:flex; flex-wrap:wrap; gap:8px }
+    .pill{ font-size:.9rem; padding:8px 12px; border-radius:999px; border:1px solid var(--border); cursor:pointer; user-select:none }
+    .pill.active{ background:rgba(124,92,255,.12); border-color:rgba(124,92,255,.6); box-shadow: inset 0 0 0 1px rgba(124,92,255,.35) }
+
+    /* Grid */
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:18px; margin:18px 0 40px }
+    .card{ grid-column: span 12; background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition: transform .2s ease, box-shadow .2s ease }
+    .card:hover{ transform: translateY(-4px); box-shadow:var(--shadow) }
+    .thumb{ aspect-ratio: 16/9; background:linear-gradient(135deg, rgba(124,92,255,.16), rgba(34,197,94,.12)); display:flex; align-items:center; justify-content:center; position:relative }
+    .thumb svg{ width:40%; opacity:.7 }
+    .content{ padding:16px }
+    .meta{ display:flex; gap:12px; align-items:center; color:var(--muted); font-size:.9rem }
+    .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px }
+    .tag{ font-size:.8rem; padding:6px 10px; border:1px dashed var(--border); border-radius:999px; color:var(--muted) }
+    .actions{ margin-top:12px; display:flex; gap:10px; flex-wrap:wrap }
+    .actions a{ font-weight:600 }
+
+    @media (min-width:700px){ .card{ grid-column: span 6 } }
+    @media (min-width:1024px){ .card{ grid-column: span 4 } }
+
+    /* Section titles */
+    .section-head{ display:flex; align-items:end; justify-content:space-between; gap:18px; margin-top:10px }
+    .section-head h2{ font-size:clamp(22px, 2.4vw, 28px); margin:0 }
+    .muted{ color:var(--muted) }
+
+    /* Footer */
+    footer{ border-top:1px solid var(--border); padding:24px 0; color:var(--muted) }
+
+    /* Dialog */
+    dialog{ width:min(720px, 94%); background:var(--bg-soft); border:1px solid var(--border); color:var(--text); border-radius:16px; padding:0; box-shadow:var(--shadow) }
+    dialog::backdrop{ background:rgba(0,0,0,.4) }
+    .dialog-header{ padding:16px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between }
+    .dialog-body{ padding:18px }
+
+    /* Utilities */
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center }
+    .ml-auto{ margin-left:auto }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Home">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Your Name</span>
+      </a>
+      <nav class="row">
+        <a class="btn" href="#projects">Projects</a>
+        <a class="btn" href="#about">About</a>
+        <a class="btn" href="#contact">Contact</a>
+        <button id="toggleTheme" class="btn" aria-label="Toggle dark mode">🌗</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero" aria-label="Intro">
+      <div class="card">
+        <h1 class="title">Hi, I’m <span style="background:linear-gradient(135deg, var(--brand), var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent">Your Name</span> —<br> builder, debugger, and perpetual tinkerer.</h1>
+        <p class="subtitle">I design and develop useful things. Below is a living index of my work: apps, tools, experiments, and delightful bugs that accidentally became features.</p>
+        <div class="tagrow">
+          <span class="chip">#python</span>
+          <span class="chip">#web</span>
+          <span class="chip">#cybersecurity</span>
+          <span class="chip">#ml</span>
+        </div>
+        <div class="cta">
+          <a href="#projects" class="button primary">View Projects</a>
+          <a href="#contact" class="button">Get in touch →</a>
+        </div>
+      </div>
+      <figure class="me card" aria-label="Decorative portrait">
+        <!-- Replace with your own image -->
+        <img alt="Abstract gradient" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 900'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='1'>
+              <stop offset='0' stop-color='%237c5cff'/>
+              <stop offset='1' stop-color='%2322c55e'/>
+            </linearGradient>
+          </defs>
+          <rect width='1200' height='900' fill='%23111418'/>
+          <circle cx='380' cy='260' r='240' fill='url(%23g)' opacity='.35'/>
+          <circle cx='860' cy='520' r='300' fill='url(%23g)' opacity='.25'/>
+          <circle cx='980' cy='200' r='120' fill='url(%23g)' opacity='.45'/>
+        </svg>" />
+      </figure>
+    </section>
+
+    <section id="projects" aria-label="Projects">
+      <div class="section-head">
+        <h2>Featured Projects</h2>
+        <p class="muted">Filter and search to explore. Add your own in <code>PROJECTS</code> below.</p>
+      </div>
+
+      <div class="controls">
+        <div class="search" role="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 4a7 7 0 105.292 12.292l3.707 3.706 1.414-1.414-3.706-3.707A7 7 0 0011 4zm0 2a5 5 0 110 10 5 5 0 010-10z" fill="currentColor"/></svg>
+          <input id="search" placeholder="Search projects by title, tag, or blurb…" aria-label="Search projects" />
+        </div>
+        <div id="filterWrap" class="filters" aria-label="Category filters"></div>
+        <select id="sort" class="pill" aria-label="Sort projects">
+          <option value="new">Newest</option>
+          <option value="old">Oldest</option>
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
+      </div>
+
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <dialog id="projectDialog" aria-label="Project details">
+        <div class="dialog-header">
+          <strong id="dlgTitle">Project</strong>
+          <button id="dlgClose" class="btn">✕</button>
+        </div>
+        <div class="dialog-body">
+          <div class="meta" id="dlgMeta"></div>
+          <p id="dlgDesc" style="margin-top:10px"></p>
+          <div class="actions" id="dlgLinks"></div>
+        </div>
+      </dialog>
+    </section>
+
+    <section id="about" aria-label="About" style="margin:46px 0">
+      <div class="section-head"><h2>About</h2></div>
+      <div class="card" style="padding:18px">
+        <p>I’m a developer and creator who enjoys building practical tools, clean UIs, and learning in public. My work spans scripting, data, and front‑end. I value shipping small, iterating fast, and writing docs others can actually follow.</p>
+      </div>
+    </section>
+
+    <section id="contact" aria-label="Contact" style="margin:46px 0 20px">
+      <div class="section-head"><h2>Contact</h2></div>
+      <div class="row">
+        <a class="button primary" href="mailto:you@example.com">Email</a>
+        <a class="button" href="https://github.com/yourname" target="_blank" rel="noopener">GitHub</a>
+        <a class="button" href="https://www.linkedin.com/in/yourname" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="button" href="#">Resume</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <span>© <span id="year"></span> Your Name</span>
+        <span class="ml-auto">Built with semantic HTML, a sprinkle of JS, and vibes.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =====================
+    // 1) EDIT YOUR PROJECTS
+    // =====================
+    // Add/modify projects here. Fields:
+    // id, title, blurb, year, tags [array], links {demo?, repo?}, image (URL or null)
+    const PROJECTS = [
+      {
+        id: 'p1',
+        title: 'Pawfect Match',
+        blurb: 'Lifestyle‑based dog‑breed matchmaker with personality profiles and rescue discovery.',
+        year: 2025,
+        tags: ['web', 'python', 'flask', 'ml'],
+        links: { demo: '#', repo: '#' },
+        image: null
+      },
+      {
+        id: 'p2',
+        title: 'DeepHex Signals',
+        blurb: 'Ichimoku‑assisted buy/sell explorer with RSI + SAR overlays and Streamlit UI.',
+        year: 2025,
+        tags: ['data', 'python', 'finance', 'streamlit'],
+        links: { demo: '#', repo: '#' },
+        image: null
+      },
+      {
+        id: 'p3',
+        title: 'CTF Toolkit',
+        blurb: 'Quick‑hit recon and Wi‑Fi audit helpers bundled with sane defaults and docs.',
+        year: 2024,
+        tags: ['security', 'linux', 'bash'],
+        links: { demo: '#', repo: '#' },
+        image: null
+      }
+    ];
+
+    // =====================
+    // 2) RENDERING + FILTERS
+    // =====================
+    const grid = document.getElementById('grid');
+    const filterWrap = document.getElementById('filterWrap');
+    const search = document.getElementById('search');
+    const sortSel = document.getElementById('sort');
+
+    const ALL_TAGS = [...new Set(PROJECTS.flatMap(p => p.tags))].sort((a,b)=> a.localeCompare(b));
+    const state = { q:'', tag:null, sort:'new' };
+
+    function makeThumbSVG(title){
+      const t = encodeURIComponent(title);
+      return `data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'>
+        <defs>
+          <linearGradient id='g' x1='0' x2='1'>
+            <stop offset='0' stop-color='%237c5cff'/>
+            <stop offset='1' stop-color='%2322c55e'/>
+          </linearGradient>
+        </defs>
+        <rect width='1200' height='675' fill='%23111418'/>
+        <circle cx='260' cy='210' r='180' fill='url(%23g)' opacity='.34'/>
+        <circle cx='920' cy='480' r='260' fill='url(%23g)' opacity='.22'/>
+        <text x='60' y='600' font-size='72' fill='%23e6e8ec' font-family='Inter, Arial, sans-serif' opacity='.9'>${t}</text>
+      </svg>`;
+    }
+
+    function renderFilters(){
+      const tags = ['all', ...ALL_TAGS];
+      filterWrap.innerHTML = '';
+      tags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = 'pill' + (state.tag === tag || (tag==='all' && state.tag===null) ? ' active' : '');
+        btn.textContent = tag;
+        btn.onclick = () => { state.tag = tag==='all' ? null : tag; renderFilters(); render(); };
+        filterWrap.appendChild(btn);
+      });
+    }
+
+    function matches(p){
+      const q = state.q.toLowerCase().trim();
+      const tagOk = !state.tag || p.tags.includes(state.tag);
+      if(!q) return tagOk;
+      return tagOk && (
+        p.title.toLowerCase().includes(q) ||
+        p.blurb.toLowerCase().includes(q) ||
+        p.tags.some(t => t.toLowerCase().includes(q))
+      );
+    }
+
+    function sortProjects(list){
+      const s = state.sort;
+      if(s==='new') return list.sort((a,b)=> b.year - a.year || a.title.localeCompare(b.title));
+      if(s==='old') return list.sort((a,b)=> a.year - b.year || a.title.localeCompare(b.title));
+      if(s==='az') return list.sort((a,b)=> a.title.localeCompare(b.title));
+      if(s==='za') return list.sort((a,b)=> b.title.localeCompare(a.title));
+      return list;
+    }
+
+    function cardHTML(p){
+      const img = p.image || makeThumbSVG(p.title);
+      const tags = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+      return `
+        <article class="card" data-id="${p.id}">
+          <a href="#" data-open="${p.id}" aria-label="Open ${p.title}">
+            <div class="thumb">
+              <img src="${img}" alt="${p.title} thumbnail"/>
+            </div>
+          </a>
+          <div class="content">
+            <div class="meta"><strong>${p.title}</strong> <span>•</span> <span>${p.year}</span></div>
+            <p class="muted" style="margin:6px 0 0">${p.blurb}</p>
+            <div class="tags">${tags}</div>
+            <div class="actions">
+              ${p.links?.demo ? `<a href="${p.links.demo}" target="_blank" rel="noopener">Live Demo →</a>`:''}
+              ${p.links?.repo ? `<a href="${p.links.repo}" target="_blank" rel="noopener">Source Code</a>`:''}
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function render(){
+      const filtered = PROJECTS.filter(matches);
+      const sorted = sortProjects(filtered);
+      grid.innerHTML = sorted.map(cardHTML).join('');
+    }
+
+    search.addEventListener('input', (e)=> { state.q = e.target.value; render(); });
+    sortSel.addEventListener('change', (e)=> { state.sort = e.target.value; render(); });
+
+    // Dialog behavior
+    const dlg = document.getElementById('projectDialog');
+    const dlgTitle = document.getElementById('dlgTitle');
+    const dlgMeta = document.getElementById('dlgMeta');
+    const dlgDesc = document.getElementById('dlgDesc');
+    const dlgLinks = document.getElementById('dlgLinks');
+    const dlgClose = document.getElementById('dlgClose');
+
+    grid.addEventListener('click', (e)=>{
+      const openBtn = e.target.closest('[data-open]');
+      if(!openBtn) return;
+      e.preventDefault();
+      const id = openBtn.getAttribute('data-open');
+      const p = PROJECTS.find(x=>x.id===id);
+      if(!p) return;
+      dlgTitle.textContent = p.title;
+      dlgMeta.textContent = `${p.year} • ${p.tags.join(', ')}`;
+      dlgDesc.textContent = p.blurb;
+      dlgLinks.innerHTML = `
+        ${p.links?.demo ? `<a class="button primary" href="${p.links.demo}" target="_blank" rel="noopener">Live Demo</a>`:''}
+        ${p.links?.repo ? `<a class="button" href="${p.links.repo}" target="_blank" rel="noopener">Source</a>`:''}
+      `;
+      dlg.showModal();
+    });
+    dlgClose.addEventListener('click', ()=> dlg.close());
+
+    // Theme toggle (persist)
+    const toggleTheme = document.getElementById('toggleTheme');
+    function setTheme(mode){
+      document.documentElement.dataset.theme = mode;
+      localStorage.setItem('theme', mode);
+    }
+    toggleTheme.addEventListener('click', ()=>{
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'dark' ? 'light' : current === 'light' ? 'auto' : 'dark';
+      setTheme(next);
+      toggleTheme.textContent = next === 'dark' ? '🌙' : next === 'light' ? '🌞' : '🌗';
+    });
+    (function initTheme(){
+      const saved = localStorage.getItem('theme') || 'auto';
+      setTheme(saved);
+      toggleTheme.textContent = saved === 'dark' ? '🌙' : saved === 'light' ? '🌞' : '🌗';
+    })();
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Init
+    renderFilters();
+    render();
+  </script>
+</body>
+</html>
